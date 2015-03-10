@@ -6,8 +6,12 @@
 #include <QLCDNumber>
 #include <QDialog>
 #include <QString>
+
 #include "adcthread.h"
-/*
+#include "datamanagement.h"
+
+#include <QSemaphore>
+
 namespace Ui {
 class MainWindow;
 }
@@ -19,30 +23,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
 
 private:
     Ui::MainWindow *ui;
-    QLabel *statusLabel;
-    QLCDNumber *lcdNumber_2;
-    QLCDNumber *lcdNumber_1;
-};
-*/
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
     AdcThread *mThread;
-
-private:
-    Ui::MainWindow *ui;
+    DataManagement *mData;
     QLabel *statusLabel;
     QLCDNumber *lcdNumber_2;
     QLCDNumber *lcdNumber_1;
@@ -50,6 +36,7 @@ private:
 public slots:
     void onValueChanged(QVector<unsigned int> valeurs);
     void onmessageLabel(QString);
+    void onBufferlevel(int);
 
 private slots:
 

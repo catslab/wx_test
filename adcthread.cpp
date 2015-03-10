@@ -1,10 +1,10 @@
 #include "adcthread.h"
-#include <QThread>
+#include "common.h"
 #include <QDebug>
 #include <prussdrv.h>
 #include <pruss_intc_mapping.h>
 #include <stdint.h>
-#include "common.h"
+
 
 AdcThread::AdcThread(QObject *parent, bool b) :
     QThread(parent), Stop(b)
@@ -32,8 +32,9 @@ int AdcThread::read_words(uint32_t x[2])
 void AdcThread::run()
 {
      tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
-     QVector<unsigned int> adc_data(4);
-     QVector<convert_results> adc_buffer (BufferSize);
+     qRegisterMetaType<QVector<unsigned int> >("QVector<unsigned int>");
+     //QVector<unsigned int> adc_data(4);
+
     int BufferCount = 0;
         uint32_t x[2];
         qDebug() << "prussdrv_init";
@@ -59,42 +60,40 @@ void AdcThread::run()
         prussdrv_pru_clear_event (PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
         qDebug() <<"prussdrv_pru_clear_event";
 
+        emit messageLabel("Debut");
         while (true)
         {
-            emit messageLabel("Debut");
-            //QMutex mutex;
-
-            // prevent other threads from changing the "Stop" value
-            /*
-            mutex.lock();
-            if(this->Stop) break;
-            mutex.unlock();
-            */
-            //QMutexLocker lock(&mutex);
-            if(this->Stop) break;
-            //QMutexLocker lock(&mutex);
-
+            
             qDebug() <<"prussdrv_pru_wait_event start";
             prussdrv_pru_wait_event (PRU_EVTOUT_0);
-          //printf("\tINFO: PRU completed transfer.\r\n");
+            //printf("\tINFO: PRU completed transfer.\r\n");
             qDebug() <<"INFO: PRU completed transfer.";
-          prussdrv_pru_clear_event (PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
-          qDebug() <<"prussdrv_pru_clear_event";
-          read_words(x);
-          adc_data[0] = (unsigned int)(x[0] & 0xFFFF);
-          adc_data[1] = (unsigned int)((x[0] >>16) & 0XFFFF);
-          adc_data[2] = (unsigned int)(x[1] & 0XFFFF);
-          adc_data[3] = (unsigned int)((x[1] >>16) & 0XFFFF);
-          adc_buffer[BufferCount].sensor1 = (unsigned int)(x[0] & 0xFFFF);
-          adc_buffer[BufferCount].sensor2 = (unsigned int)((x[0] >>16) & 0XFFFF);
-          adc_buffer[BufferCount].sensor3 = (unsigned int)(x[1] & 0XFFFF);
-          adc_buffer[BufferCount].sensor4 = (unsigned int)((x[1] >>16) & 0XFFFF);
-          if ( BufferCount++ == 8192 )
-              BufferCount = 0;
-          // emit the signal for the count label
-          emit valueChanged(adc_data);
+            prussdrv_pru_clear_event (PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
+            qDebug() <<"prussdrv_pru_clear_event";
+            read_words(x);
+            /*
+            adc_data[0] = (unsigned int)(x[0] & 0xFFFF);
+            adc_data[1] = (unsigned int)((x[0] >>16) & 0XFFFF);
+            adc_data[2] = (unsigned int)(x[1] & 0XFFFF);
+            adc_data[3] = (unsigned int)((x[1] >>16) & 0XFFFF);
+            */
+            if (!this->Stop)
+            {
+                freeBytes.acquire();
+                adc_buffer[BufferCount].sensor1 = (unsigned int)(x[0] & 0xFFFF);
+                adc_buffer[BufferCount].sensor2 = (unsigned int)((x[0] >>16) & 0XFFFF);
+                adc_buffer[BufferCount].sensor3 = (unsigned int)(x[1] & 0XFFFF);
+                adc_buffer[BufferCount].sensor4 = (unsigned int)((x[1] >>16) & 0XFFFF);
+                usedBytes.release();
+            }
+            //emit producerCountChanged(BufferCount);
+            
+            if ( BufferCount++ == BufferSize )
+                BufferCount = 0;
+            // emit the signal for the count label
+            //emit valueChanged(adc_data);
         }
         prussdrv_pru_disable(0);
-        //prussdrv_exit();
+        prussdrv_exit();
         emit messageLabel("Fermeture pru");
 }

@@ -11,10 +11,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = pruss_wx
 TEMPLATE = app
 
+DEFINES += QT_NO_DEBUG_OUTPUT
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    adcthread.cpp
+    adcthread.cpp \
+    datamanagement.cpp
 
 LIBS +=-lprussdrv
 #LIBS +=libprussdrv.so
@@ -23,7 +25,9 @@ QMAKE_LIBDIR+=/Users/cedric/Development/BeagleBone/sysroot/lib
 
 HEADERS  += mainwindow.h \
     adcthread.h \
-    common.h
+    common.h \
+    datamanagement.h \
+    myconstants.h
 
 FORMS    += mainwindow.ui
 

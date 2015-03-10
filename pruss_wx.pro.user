@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.3.0, 2015-03-06T16:44:07. -->
+<!-- Written by QtCreator 3.3.0, 2015-03-10T15:27:54. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -206,8 +206,8 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.DirectUploadStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
-       <value type="QString">/Users/cedric/Development/BeagleBone/build-pruss_wx-Qt_4_8_6-Release/pruss_wx</value>
        <value type="QString">/Users/cedric/Development/BeagleBone/build-pruss_wx-Qt_4_8_6-Debug/pruss_wx</value>
+       <value type="QString">/Users/cedric/Development/BeagleBone/build-pruss_wx-Qt_4_8_6-Release/pruss_wx</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
        <value type="QString">192.168.10.85</value>
@@ -222,8 +222,8 @@
        <value type="QString">/usr/local/Trolltech/Qt-4.8.6-beaglebone</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2015-02-04T11:06:45</value>
        <value type="QDateTime">2015-02-03T13:58:57</value>
+       <value type="QDateTime">2015-02-04T11:06:45</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>
@@ -464,7 +464,7 @@
        <value type="QString">/usr/local/opt/qt5.4</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2015-03-06T16:42:31</value>
+       <value type="QDateTime">2015-03-10T15:24:57</value>
        <value type="QDateTime">2015-03-04T13:59:03</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
